@@ -27,7 +27,7 @@ public class Resultado {
         return erro;
     }
 
-    public String mensagemErro(){
+    public String getMensagemErro(){
         return mensagemErro;
     }
 }
