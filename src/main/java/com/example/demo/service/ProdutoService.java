@@ -69,7 +69,12 @@ public class ProdutoService {
         
     public Resultado detalharProduto(Long id) {
         Produto produto = produtoRepository.findById(id).orElse(null);
-        return produto != null ? Resultado.sucesso(produtoMapper.toDTO(produto)) : Resultado.erro("Produto não encontrado!");
+        if (produto == null) {
+            return Resultado.erro("Produto não encontrado!");
+        } else {
+            ProdutoDTO produtoDTO = produtoMapper.toDTO(produto);
+            return Resultado.sucesso(produtoDTO);
+        }
     }
 
     @Transactional
