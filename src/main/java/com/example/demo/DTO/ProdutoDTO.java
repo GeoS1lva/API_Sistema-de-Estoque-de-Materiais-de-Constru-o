@@ -6,26 +6,32 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class ProdutoDTO {
 
+    
     @NotBlank(message = "Insira o nome do produto!")
-    @Column(length = 100)
+    @Column(length = 50)
+    @Size(max = 50, message = "O nome deve ter no máximo 50 caracteres")
     @Schema(example = "Nome do produto")
     private String nome;
 
     @NotBlank(message = "Insira a descrição do produto!")
     @Column(length = 255)
+    @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres")
     @Schema(example = "Descrição do produto")
     private String descricao;
 
     @NotNull(message = "Insira a quantidade do produto!")
+    @Column(length = 11)
     @Schema(example = "50")
     private Integer quantidade;
 
     @NotNull(message = "Insira o preço unitário do produto!")
+    @Column(precision = 10, scale = 2)
     @Schema(example = "99.99")
     private BigDecimal precoUnitario;
 

@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,11 +20,11 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotBlank(message = "O nome da categoria não pode ser vazio.")
-    @Column(nullable = false, length = 100)
+    
+    @Column(nullable = false)
     private String nome;
 
-    @NotBlank(message = "A descrição da categoria não pode ser vazia.")
-    @Column(nullable = false, length = 255)
+   
+    @Column(nullable = false)
     private String descricao;  
 }
