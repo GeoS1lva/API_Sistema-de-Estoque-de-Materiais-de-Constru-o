@@ -12,7 +12,6 @@ import lombok.Data;
 @Data
 public class ProdutoDTO {
 
-    
     @NotBlank(message = "Insira o nome do produto!")
     @Column(length = 50)
     @Size(max = 50, message = "O nome deve ter no máximo 50 caracteres")
@@ -38,5 +37,5 @@ public class ProdutoDTO {
     @NotNull(message = "Insira a categoria do produto!")
     @Schema(example = "1")
     private Long categoriaId;
-    
+
 }

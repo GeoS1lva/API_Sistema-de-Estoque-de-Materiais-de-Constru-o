@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.example.demo.DTO.ProdutoDTO;
 
 import com.example.demo.service.ProdutoService;
@@ -21,9 +20,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
-
 @RestController
 @RequestMapping("api/produtos")
 @Tag(name = "Produtos", description = "Gerenciamento de Produtos")
@@ -32,11 +28,11 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-    @PostMapping
-    public ResponseEntity<?> cadastrarProduto(@RequestBody @Valid ProdutoDTO produtoDTO){
+    @PostMapping("/cadastrarProduto")
+    public ResponseEntity<?> cadastrarProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
         Resultado resultado = produtoService.cadastrarProduto(produtoDTO);
 
-        if(resultado.getErro()){
+        if (resultado.getErro()) {
             return ResponseEntity.badRequest().body(resultado.getMensagemErro());
         }
 
@@ -44,10 +40,10 @@ public class ProdutoController {
     }
 
     @GetMapping("/listarProdutos")
-    public ResponseEntity<?> listarProdutos(){
+    public ResponseEntity<?> listarProdutos() {
         List<ProdutoDTO> produtos = produtoService.listarProdutos();
 
-        if(produtos == null || produtos.isEmpty()){
+        if (produtos == null || produtos.isEmpty()) {
             return ResponseEntity.badRequest().body("Nenhum produto encontrado.");
         }
 
@@ -55,32 +51,32 @@ public class ProdutoController {
     }
 
     @GetMapping("/detalharProdutos/{id}")
-    public ResponseEntity<?> detalharProduto(@PathVariable Long id){
+    public ResponseEntity<?> detalharProduto(@PathVariable Long id) {
         Resultado resultado = produtoService.detalharProduto(id);
-        if(resultado.getErro()){
+        if (resultado.getErro()) {
             return ResponseEntity.badRequest().body(resultado.getMensagemErro());
         }
         return ResponseEntity.ok(resultado.getValor());
     }
 
     @PutMapping("/atualizarProduto/{id}")
-    public ResponseEntity<?> atualizarProduto(@PathVariable Long id, @RequestBody ProdutoDTO produtoDTO){
+    public ResponseEntity<?> atualizarProduto(@PathVariable Long id, @RequestBody ProdutoDTO produtoDTO) {
         Resultado resultado = produtoService.atualizarProduto(id, produtoDTO);
-        if(resultado.getErro()){
+        if (resultado.getErro()) {
             return ResponseEntity.badRequest().body(resultado.getMensagemErro());
         }
         return ResponseEntity.ok(resultado.getValor());
-   
+
     }
 
     @DeleteMapping("/deletarProduto/{id}")
-    public ResponseEntity<?> removerProduto (@PathVariable Long id) {
+    public ResponseEntity<?> removerProduto(@PathVariable Long id) {
         Resultado resultado = produtoService.removerProduto(id);
 
-        if(resultado.getErro()){
+        if (resultado.getErro()) {
             return ResponseEntity.badRequest().body(resultado.getMensagemErro());
         }
         return ResponseEntity.ok(resultado.getValor());
-    } 
-        
+    }
+
 }
