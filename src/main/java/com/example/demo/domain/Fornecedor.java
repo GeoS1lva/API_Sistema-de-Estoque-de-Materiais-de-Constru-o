@@ -16,9 +16,6 @@ import lombok.Setter;
 public class Fornecedor extends Entidade {
 
     @Column(nullable = false)
-    private Long id;
-
-    @Column(nullable = false)
     private String nome;
 
     @Column(nullable = false, unique = true)
