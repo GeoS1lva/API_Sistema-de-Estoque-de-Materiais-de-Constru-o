@@ -1,3 +1,7 @@
+/*
+ * Geovana Paula da Silva RA 170610-2024
+*/
+
 package com.example.demo.service;
 
 import java.util.List;
@@ -36,9 +40,9 @@ public class ClienteService {
 
         Cliente novoCliente = clienteMapper.toEntity(cliente);
 
-        Cliente salvo = clienteRepository.save(novoCliente);
+        clienteRepository.save(novoCliente);
 
-        return Resultado.sucesso(clienteMapper.toDTO(salvo));
+        return Resultado.sucesso(clienteMapper.toDTO(novoCliente));
     }
 
     public Resultado listarClientes(){

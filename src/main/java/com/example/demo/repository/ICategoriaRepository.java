@@ -10,7 +10,6 @@ public interface ICategoriaRepository extends JpaRepository<Categoria, Long> {
     boolean existsByNome(String nome);
 
     boolean existsById(Long id);
-
+    
     Optional<Categoria> findByNome(String nome);
-
 }
