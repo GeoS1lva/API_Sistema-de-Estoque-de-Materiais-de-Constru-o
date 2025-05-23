@@ -20,7 +20,6 @@ import lombok.Setter;
 
 public class Categoria extends Entidade {
 
-    @Id
     private Long id;
 
     @Column(nullable = false)

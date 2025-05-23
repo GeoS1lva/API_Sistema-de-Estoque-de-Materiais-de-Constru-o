@@ -15,7 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Fornecedor extends Entidade {
 
-    @Id
     @Column(nullable = false)
     private Long id;
 

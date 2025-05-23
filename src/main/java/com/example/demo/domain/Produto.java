@@ -21,7 +21,6 @@ import lombok.Setter;
 
 public class Produto extends Entidade {
 
-    @Id
     private Long id;
 
     @Column(nullable = false)
