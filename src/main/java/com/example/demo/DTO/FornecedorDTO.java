@@ -1,3 +1,7 @@
+/*---------------------
+Autor: Eduardo Bernardes Zanin
+---------------------*/
+
 package com.example.demo.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;

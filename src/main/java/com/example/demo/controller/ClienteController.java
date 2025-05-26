@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
 @RestController
 @RequestMapping("api/clientes")
 @Tag(name = "Clientes", description = "Gerenciamento de clientes")
@@ -28,10 +27,10 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<?> cadastrarCliente(@RequestBody @Valid ClienteDTO clienteDTO){
+    public ResponseEntity<?> cadastrarCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
         Resultado resultado = clienteService.cadastrarCliente(clienteDTO);
 
-        if(resultado.getErro()){
+        if (resultado.getErro()) {
             return ResponseEntity.badRequest().body(resultado.getMensagemErro());
         }
 
@@ -39,10 +38,10 @@ public class ClienteController {
     }
 
     @GetMapping("/listarClientes")
-    public ResponseEntity<?> listasClientes(){
+    public ResponseEntity<?> listasClientes() {
         Resultado resultado = clienteService.listarClientes();
 
-        if(resultado.getErro()){
+        if (resultado.getErro()) {
             return ResponseEntity.badRequest().body(resultado.getMensagemErro());
         }
 
@@ -50,14 +49,14 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{cpf}")
-        public ResponseEntity<?> deletarPorCpf(@PathVariable String cpf){
+    public ResponseEntity<?> deletarPorCpf(@PathVariable String cpf) {
         Resultado resultado = clienteService.deletarPorCpf(cpf);
 
-        if(resultado.getErro()){
+        if (resultado.getErro()) {
             return ResponseEntity.badRequest().body(resultado.getMensagemErro());
         }
 
         return ResponseEntity.ok(resultado.getValor());
     }
-    
+
 }

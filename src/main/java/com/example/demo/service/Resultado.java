@@ -11,23 +11,23 @@ public class Resultado {
         this.mensagemErro = mensagemErro;
     }
 
-    public static Resultado sucesso (Object valor){
+    public static Resultado sucesso(Object valor) {
         return new Resultado(valor, false, "");
     }
 
-    public static Resultado erro (String mensagemErro){
+    public static Resultado erro(String mensagemErro) {
         return new Resultado(null, true, mensagemErro);
     }
 
-    public Object getValor(){
+    public Object getValor() {
         return valor;
     }
 
-    public boolean getErro(){
+    public boolean getErro() {
         return erro;
     }
 
-    public String getMensagemErro(){
+    public String getMensagemErro() {
         return mensagemErro;
     }
 }

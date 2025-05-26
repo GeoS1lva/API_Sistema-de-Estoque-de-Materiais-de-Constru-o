@@ -4,18 +4,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.DTO.CategoriaDTO;
 import com.example.demo.DTO.ProdutoDTO;
 import com.example.demo.domain.Categoria;
 import com.example.demo.mapper.CategoriaMapper;
 import com.example.demo.mapper.ProdutoMapper;
 import com.example.demo.repository.ICategoriaRepository;
-
-import org.springframework.util.StringUtils;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -32,7 +28,7 @@ public class CategoriaService {
 
     @Transactional
     public Resultado registrarCategoria(CategoriaDTO categoriaDTO) {
-        if (!StringUtils.hasText(categoriaDTO.getNome())) {
+        if (categoriaDTO.getNome() == null || "".equals(categoriaDTO.getNome())) {
             return Resultado.erro("O nome da categoria não pode ser vazio!");
         }
 
@@ -52,6 +48,7 @@ public class CategoriaService {
         Categoria savedCategoria = categoriaRepository.save(categoria);
 
         return Resultado.sucesso(categoriaMapper.tDto(savedCategoria));
+
     }
 
     public List<CategoriaDTO> listarCategoria() {
@@ -83,7 +80,7 @@ public class CategoriaService {
 
     @Transactional
     public Resultado atualizarCategoria(Long id, CategoriaDTO categoriaDTO) {
-        if (!StringUtils.hasText(categoriaDTO.getNome())) {
+        if (categoriaDTO.getNome() == null || "".equals(categoriaDTO.getNome())) {
             return Resultado.erro("O nome da categoria não pode ser vazio!");
         }
 
@@ -111,7 +108,7 @@ public class CategoriaService {
     }
 
     @Transactional
-    public Resultado RemoverCategoria(long id) {
+    public Resultado RemoverCategoria(Long id) {
         if (!categoriaRepository.existsById(id)) {
             return Resultado.erro("Categoria não encontrada!");
         }

@@ -1,18 +1,18 @@
+/*---------------------
+Autor: Eduardo Bernardes Zanin
+---------------------*/
+
 package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.DTO.CategoriaDTO;
 import com.example.demo.DTO.ProdutoDTO;
 import com.example.demo.service.CategoriaService;
 import com.example.demo.service.Resultado;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +32,7 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @PostMapping("/registrarCategoria")
-    public ResponseEntity<?> registrarCategoria(@RequestBody @Valid CategoriaDTO categoriaDTO) {
+    public ResponseEntity<?> registrarCategoria(@Valid @RequestBody CategoriaDTO categoriaDTO) {
         Resultado resultado = categoriaService.registrarCategoria(categoriaDTO);
 
         if (resultado.getErro()) {

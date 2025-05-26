@@ -7,16 +7,17 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 public class ClienteDTO {
-    
+
     @NotBlank(message = "Insira o nome!")
     @Column(length = 100)
     @Schema(example = "Nome completo do cliente")
     private String nome;
 
     @NotBlank(message = "Insira o CPF!")
-    @Size(min = 11, max  = 11, message = "O CPF deve conter 11 caracteres")
+    @Size(min = 11, max = 11, message = "O CPF deve conter 11 caracteres")
     @Schema(example = "CPF do cliente (somente números)")
     private String cpf;
 
