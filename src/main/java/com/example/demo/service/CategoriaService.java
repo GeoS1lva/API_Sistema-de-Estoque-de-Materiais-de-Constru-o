@@ -45,9 +45,9 @@ public class CategoriaService {
         }
 
         Categoria categoria = categoriaMapper.tEntity(categoriaDTO);
-        Categoria savedCategoria = categoriaRepository.save(categoria);
+        categoriaRepository.save(categoria);
 
-        return Resultado.sucesso(categoriaMapper.tDto(savedCategoria));
+        return Resultado.sucesso(categoriaMapper.tDto(categoria));
 
     }
 

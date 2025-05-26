@@ -12,4 +12,6 @@ public interface IProdutoRepository extends JpaRepository<Produto, Long> {
     boolean existsById(Long id);
 
     void deleteById(Long id);
+
+    Produto getById(Long id);
 }
