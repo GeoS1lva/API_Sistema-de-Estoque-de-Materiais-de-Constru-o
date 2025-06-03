@@ -13,6 +13,7 @@ import com.example.demo.DTO.VendaDTO;
 import com.example.demo.service.Resultado;
 import com.example.demo.service.VendaService;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("api/vendas")
@@ -40,7 +39,7 @@ public class VendaController {
         }
 
         return ResponseEntity.ok(resultado.getValor());
-    }
+    }   
 
     @GetMapping
     public ResponseEntity<?> listarVendas(){
@@ -64,7 +63,7 @@ public class VendaController {
         return ResponseEntity.ok(resultado.getValor());
     }
 
-    @DeleteMapping("/{Id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> removerVenda(@PathVariable Long id){
         Resultado resultado = vendaService.deletarVenda(id);
 

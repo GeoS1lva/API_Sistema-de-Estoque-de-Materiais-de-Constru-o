@@ -110,17 +110,19 @@ public class ProdutoService {
             return Resultado.erro("A quantidade deve ser maior que zero.");
         }
 
-        Optional<Produto> optionalProduto = produtoRepository.findById(id);
-        if (optionalProduto.isPresent()) {
-            Produto produto = optionalProduto.get();
-            produto.setNome(produtoDTO.getNome());
-            produto.setDescricao(produtoDTO.getDescricao());
-            produto.setQuantidade(produtoDTO.getQuantidade());
-            produto.setPrecoUnitario(produtoDTO.getPrecoUnitario());
-            produtoRepository.save(produto);
-            return Resultado.sucesso(produtoMapper.toDTO(produto));
+        Produto optionalProduto = produtoRepository.getById(id);
+        if(optionalProduto == null){
+            return Resultado.erro("deu ruim");
         }
-        return Resultado.erro("Produto não encontrado!");
+        
+
+            optionalProduto.setNome(produtoDTO.getNome());
+            optionalProduto.setDescricao(produtoDTO.getDescricao());
+            optionalProduto.setQuantidade(produtoDTO.getQuantidade());
+            optionalProduto.setPrecoUnitario(produtoDTO.getPrecoUnitario());
+            produtoRepository.save(optionalProduto);
+            return Resultado.sucesso(produtoMapper.toDTO(optionalProduto));
+
     }
 
     @Transactional

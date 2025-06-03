@@ -8,12 +8,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Compra;
-import java.util.List;
+import com.example.demo.domain.Fornecedor;
+import com.example.demo.domain.Produto;
+
+import jakarta.transaction.Transactional;
 
 
 @Repository
+@Transactional
 public interface ICompraRepository extends JpaRepository<Compra, Long>{
-    List<Compra> findByFornecedorId(Long fornecedor_id);
+    Compra getById(Long Id);
 
-    List<Compra> findByProdutoId(Long produto_id);
+    boolean existsByFornecedor(Fornecedor fornecedor);
+
+    boolean existsByProduto(Produto produto);
 }

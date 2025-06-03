@@ -31,7 +31,7 @@ public class Venda extends Entidade{
     private Produto produto;
 
     @Column(nullable = false)
-    private int quantidade;
+    private Integer quantidade;
 
     @Column(nullable = false)
     private BigDecimal valorTotal;
@@ -39,11 +39,11 @@ public class Venda extends Entidade{
     @Column(nullable = false)
     private LocalDateTime dataVenda;
 
-    public Venda (Cliente cliente, Produto produto, int quantidade, LocalDateTime dataVenda){
+    public Venda (Cliente cliente, Produto produto, Integer quantidade){
         this.cliente = cliente;
         this.produto = produto;
         this.quantidade = quantidade;
         valorTotal = produto.getPrecoUnitario().multiply(BigDecimal.valueOf(quantidade));
-        this.dataVenda = dataVenda;
+        this.dataVenda = LocalDateTime.now();
     }
 }

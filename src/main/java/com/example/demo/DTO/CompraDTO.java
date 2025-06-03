@@ -9,14 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class VendaDTO {
-
-    @NotNull(message = "Insira o Id do Cliente!")
-    private Long clienteId;
+public class CompraDTO {
 
     @NotNull(message = "Insira o Id do Produto!")
     private Long produtoId;
 
-    @NotNull(message = "Insira a quantidade comprada!")
+    @NotNull(message = "Insira o Id do Fornecedor!")
+    private Long fornecedorId;
+
+    @NotNull(message = "Insira a quantidade!")
     private Integer quantidade;
 }
