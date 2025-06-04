@@ -68,7 +68,7 @@ public class ProdutoController {
     public ResponseEntity<?> atualizarProduto(@Valid @PathVariable Long id, @RequestBody ProdutoDTO produtoDTO) {
         Resultado resultado = produtoService.atualizarProduto(id, produtoDTO);
         if (resultado.getErro()) {
-            return ResponseEntity.badRequest().body("Nenhum produto encontrado com o ID: " + id);
+            return ResponseEntity.badRequest().body(resultado.getMensagemErro());
         }
         return ResponseEntity.ok(produtoDTO);
 

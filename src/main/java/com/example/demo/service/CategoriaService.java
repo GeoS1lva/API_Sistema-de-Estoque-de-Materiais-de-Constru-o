@@ -13,6 +13,7 @@ import com.example.demo.mapper.CategoriaMapper;
 import com.example.demo.mapper.ProdutoMapper;
 import com.example.demo.repository.ICategoriaRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @Service
 public class CategoriaService {
@@ -28,7 +29,7 @@ public class CategoriaService {
 
     @Transactional
     public Resultado registrarCategoria(CategoriaDTO categoriaDTO) {
-        if (categoriaDTO.getNome() == null || "".equals(categoriaDTO.getNome())) {
+        if (categoriaDTO.getNome() == null || categoriaDTO.getNome().trim().isEmpty()) {
             return Resultado.erro("O nome da categoria não pode ser vazio!");
         }
 
@@ -36,7 +37,7 @@ public class CategoriaService {
             return Resultado.erro("Categoria já existe!");
         }
 
-        if (categoriaDTO.getDescricao().isEmpty()) {
+        if (categoriaDTO.getDescricao() == null || categoriaDTO.getDescricao().isEmpty()) {
             return Resultado.erro("A descrição da categoria não pode ser vazia!");
         }
 
@@ -47,7 +48,7 @@ public class CategoriaService {
         Categoria categoria = categoriaMapper.tEntity(categoriaDTO);
         categoriaRepository.save(categoria);
 
-        return Resultado.sucesso(categoriaMapper.tDto(categoria));
+        return Resultado.sucesso("Categoria cadastrada com sucesso com ID: " + categoria.getId());
 
     }
 
@@ -62,10 +63,13 @@ public class CategoriaService {
         }
     }
 
-    public Resultado detalharCategoria(Long id) {
+    public Resultado detalharCategoria(@Valid Long id) {
         Categoria categoria = categoriaRepository.findById(id).orElse(null);
-        return categoria != null ? Resultado.sucesso(categoriaMapper.tDto(categoria))
-                : Resultado.erro("Categoria não encontrada!");
+        if (categoria == null) {
+            return Resultado.erro("Categoria nao encontrada!");
+        } else {
+            return Resultado.sucesso(categoriaMapper.tDto(categoria));
+        }
     }
 
     public List<ProdutoDTO> listarProdutosPorCategoria(String nomeCategoria) {
@@ -80,7 +84,7 @@ public class CategoriaService {
 
     @Transactional
     public Resultado atualizarCategoria(Long id, CategoriaDTO categoriaDTO) {
-        if (categoriaDTO.getNome() == null || "".equals(categoriaDTO.getNome())) {
+        if (categoriaDTO.getNome() == null || categoriaDTO.getNome().trim().isEmpty()) {
             return Resultado.erro("O nome da categoria não pode ser vazio!");
         }
 
@@ -88,7 +92,7 @@ public class CategoriaService {
             return Resultado.erro("Já existe uma categoria com esse nome");
         }
 
-        if (categoriaDTO.getDescricao().isEmpty()) {
+        if (categoriaDTO.getDescricao() == null || categoriaDTO.getDescricao().isEmpty()) {
             return Resultado.erro("A descrição da categoria não pode ser vazia!");
         }
 

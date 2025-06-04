@@ -60,15 +60,9 @@ public class ProdutoService {
             return Resultado.erro("Produto já cadastrado!");
         }
 
-        Produto produto = new Produto();
-        produto.setNome(produtoDTO.getNome());
-        produto.setDescricao(produtoDTO.getDescricao());
-        produto.setPrecoUnitario(produtoDTO.getPrecoUnitario());
-        produto.setQuantidade(produtoDTO.getQuantidade());
-        produto.setCategoria(categoria);
-
-        produtoRepository.save(produto);
-        return Resultado.sucesso("Produto cadastrado com sucesso com o ID: " + produto.getId() + "!");
+        Produto novoProduto = produtoMapper.toEntity(produtoDTO);
+        produtoRepository.save(novoProduto);
+        return Resultado.sucesso("Produto cadastrado com sucesso com o ID: " + novoProduto.getId() + "!");
     }
 
     public List<ProdutoDTO> listarProdutos() {
@@ -87,18 +81,17 @@ public class ProdutoService {
         if (produto == null) {
             return Resultado.erro("Produto não encontrado!");
         } else {
-            ProdutoDTO produtoDTO = produtoMapper.toDTO(produto);
-            return Resultado.sucesso(produtoDTO);
+            return Resultado.sucesso(produtoMapper.toDTO(produto));
         }
     }
 
     @Transactional
     public Resultado atualizarProduto(@Valid Long id, ProdutoDTO produtoDTO) {
-        if (produtoDTO.getNome() == null || "".equals(produtoDTO.getNome())) {
+        if (produtoDTO.getNome() == null || produtoDTO.getNome().trim().isEmpty()) {
             return Resultado.erro("O nome do produto não pode ser vazio!");
         }
 
-        if (produtoDTO.getDescricao() == null || "".equals(produtoDTO.getDescricao())) {
+        if (produtoDTO.getDescricao() == null || produtoDTO.getDescricao().trim().isEmpty()) {
             return Resultado.erro("A descrição do produto não pode ser vazia!");
         }
 
@@ -110,17 +103,18 @@ public class ProdutoService {
             return Resultado.erro("A quantidade deve ser maior que zero.");
         }
 
-        Optional<Produto> optionalProduto = produtoRepository.findById(id);
-        if (optionalProduto.isPresent()) {
-            Produto produto = optionalProduto.get();
-            produto.setNome(produtoDTO.getNome());
-            produto.setDescricao(produtoDTO.getDescricao());
-            produto.setQuantidade(produtoDTO.getQuantidade());
-            produto.setPrecoUnitario(produtoDTO.getPrecoUnitario());
-            produtoRepository.save(produto);
-            return Resultado.sucesso(produtoMapper.toDTO(produto));
+        Optional<Produto> produtoOptional = produtoRepository.findById(id);
+        if (!produtoOptional.isPresent()) {
+            return Resultado.erro("Produto não encontrado!");
         }
-        return Resultado.erro("Produto não encontrado!");
+
+        Produto produto = produtoOptional.get();
+        produto.setNome(produtoDTO.getNome());
+        produto.setDescricao(produtoDTO.getDescricao());
+        produto.setQuantidade(produtoDTO.getQuantidade());
+        produto.setPrecoUnitario(produtoDTO.getPrecoUnitario());
+        produtoRepository.save(produto);
+        return Resultado.sucesso(produtoMapper.toDTO(produto));
     }
 
     @Transactional

@@ -18,23 +18,23 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class ClienteService {
-    
+
     @Autowired
     private IClienteRepository clienteRepository;
 
     @Autowired
     private ClienteMapper clienteMapper;
 
-    public Resultado cadastrarCliente(ClienteDTO cliente){
+    public Resultado cadastrarCliente(ClienteDTO cliente) {
         if (!cliente.getNome().trim().contains(" ")) {
             return Resultado.erro("Nome deve conter nome e sobrenome");
         }
 
-        if(!validarCpf(cliente.getCpf())) {
+        if (!validarCpf(cliente.getCpf())) {
             return Resultado.erro("CPF inválido!");
         }
 
-        if(clienteRepository.existsByCpf(cliente.getCpf())){
+        if (clienteRepository.existsByCpf(cliente.getCpf())) {
             return Resultado.erro("CPF já cadastrado!");
         }
 
@@ -45,10 +45,10 @@ public class ClienteService {
         return Resultado.sucesso(clienteMapper.toDTO(novoCliente));
     }
 
-    public Resultado listarClientes(){
+    public Resultado listarClientes() {
         List<Cliente> clientes = clienteRepository.findAll();
 
-        if(clientes.isEmpty()){
+        if (clientes.isEmpty()) {
             return Resultado.erro("Não possui clientes cadastrado!");
         }
 
@@ -56,8 +56,8 @@ public class ClienteService {
     }
 
     @Transactional
-    public Resultado deletarPorCpf(String cpf){
-        if (!clienteRepository.existsByCpf(cpf)){
+    public Resultado deletarPorCpf(String cpf) {
+        if (!clienteRepository.existsByCpf(cpf)) {
             return Resultado.erro("Cliente não encontrado!");
         }
 
@@ -69,34 +69,35 @@ public class ClienteService {
 
         String cpf = CPF.replaceAll("\\D", "");
 
-        if (cpf.length() != 11){
+        if (cpf.length() != 11) {
             return false;
         }
-            
-        if (cpf.chars().allMatch(c -> c == cpf.charAt(0))){
+
+        if (cpf.chars().allMatch(c -> c == cpf.charAt(0))) {
             return false;
         }
-            
+
         int soma = 0;
-        for (int i = 0; i < 9; i++){
+        for (int i = 0; i < 9; i++) {
             soma += Character.getNumericValue(cpf.charAt(i)) * (10 - i);
         }
-            
+
         int primeiroDigitoVerificador = 11 - (soma % 11);
-        if (primeiroDigitoVerificador >= 10){
+        if (primeiroDigitoVerificador >= 10) {
             primeiroDigitoVerificador = 0;
         }
-            
+
         soma = 0;
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             soma += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
         }
 
         int segundoDigitoVerificador = 11 - (soma % 11);
-        if (segundoDigitoVerificador >= 10){
+        if (segundoDigitoVerificador >= 10) {
             segundoDigitoVerificador = 0;
         }
-            
-        return cpf.charAt(9) == Character.forDigit(primeiroDigitoVerificador, 10) && cpf.charAt(10) == Character.forDigit(segundoDigitoVerificador, 10);
+
+        return cpf.charAt(9) == Character.forDigit(primeiroDigitoVerificador, 10)
+                && cpf.charAt(10) == Character.forDigit(segundoDigitoVerificador, 10);
     }
 }
