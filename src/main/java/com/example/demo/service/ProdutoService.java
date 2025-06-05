@@ -39,11 +39,11 @@ public class ProdutoService {
             return Resultado.erro("Categoria não encontrada!");
         }
 
-        if (produtoDTO.getNome() == null || produtoDTO.getNome().isEmpty()) {
+        if (produtoDTO.getNome() == null || produtoDTO.getNome().trim().isEmpty()) {
             return Resultado.erro("O nome do produto não pode ser vazio!");
         }
 
-        if (produtoDTO.getDescricao() == null || produtoDTO.getDescricao().isEmpty()) {
+        if (produtoDTO.getDescricao() == null || produtoDTO.getDescricao().trim().isEmpty()) {
             return Resultado.erro("A descrição do produto não pode ser vazia!");
         }
 
@@ -104,7 +104,7 @@ public class ProdutoService {
             return Resultado.erro("A quantidade deve ser maior que zero.");
         }
 
-        Produto optionalProduto = produtoRepository.getById(id);
+        Produto optionalProduto = produtoRepository.findById(id).orElse(null);
         if (optionalProduto == null) {
             return Resultado.erro("Produto nao encontrado!");
         }
