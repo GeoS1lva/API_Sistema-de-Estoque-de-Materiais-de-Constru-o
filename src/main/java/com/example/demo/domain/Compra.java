@@ -12,7 +12,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +19,7 @@ import lombok.Setter;
 @Entity
 @Table(name="compras")
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
 public class Compra extends Entidade{
     
     @ManyToOne
@@ -32,11 +31,19 @@ public class Compra extends Entidade{
     private Fornecedor fornecedor;
 
     @Column(nullable = false)
-    private int quantidade;
+    private Integer quantidade;
 
     @Column(nullable = false)
     private BigDecimal valorTotal;
 
     @Column(nullable = false)
     private LocalDateTime dataCompra;
+
+    public Compra(Produto produto, Fornecedor fornecedor, Integer quantidade){
+        this.produto = produto;
+        this.fornecedor = fornecedor;
+        this.quantidade = quantidade;
+        valorTotal = produto.getPrecoUnitario().multiply(BigDecimal.valueOf(quantidade));
+        this.dataCompra = LocalDateTime.now();
+    }
 }

@@ -13,8 +13,7 @@ import com.example.demo.DTO.ClienteDTO;
 import com.example.demo.domain.Cliente;
 import com.example.demo.mapper.ClienteMapper;
 import com.example.demo.repository.IClienteRepository;
-
-import jakarta.transaction.Transactional;
+import com.example.demo.repository.IVendaRepository;
 
 @Service
 public class ClienteService {
@@ -23,10 +22,13 @@ public class ClienteService {
     private IClienteRepository clienteRepository;
 
     @Autowired
+    private IVendaRepository vendaRepository;
+
+    @Autowired
     private ClienteMapper clienteMapper;
 
     public Resultado cadastrarCliente(ClienteDTO cliente) {
-        if (!cliente.getNome().trim().contains(" ")) {
+        if (!cliente.getNome().contains(" ")) {
             return Resultado.erro("Nome deve conter nome e sobrenome");
         }
 
@@ -55,10 +57,15 @@ public class ClienteService {
         return Resultado.sucesso(clienteMapper.toDTOList(clientes));
     }
 
-    @Transactional
     public Resultado deletarPorCpf(String cpf) {
         if (!clienteRepository.existsByCpf(cpf)) {
             return Resultado.erro("Cliente não encontrado!");
+        }
+
+        Cliente cliente = clienteRepository.getByCpf(cpf);
+
+        if (vendaRepository.existsByCliente(cliente)) {
+            return Resultado.erro("Esse cliente não pode ser excluído pois possui vendas registradas!");
         }
 
         clienteRepository.deleteByCpf(cpf);

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Categoria;
+import java.util.List;
 
 @Repository
 public interface ICategoriaRepository extends JpaRepository<Categoria, Long> {
@@ -19,5 +20,7 @@ public interface ICategoriaRepository extends JpaRepository<Categoria, Long> {
     Optional<Categoria> findByNome(String nome);
 
     void deleteById(Long id);
+
+    Categoria getById(Long id);
 
 }

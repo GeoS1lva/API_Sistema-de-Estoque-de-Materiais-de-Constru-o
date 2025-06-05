@@ -5,7 +5,6 @@ Autor: Eduardo Bernardes Zanin
 package com.example.demo.service;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +39,7 @@ public class ProdutoService {
             return Resultado.erro("Categoria não encontrada!");
         }
 
-        if (produtoDTO.getNome() == null || " ".equals(produtoDTO.getNome())) {
+        if (produtoDTO.getNome() == null || produtoDTO.getNome().isEmpty()) {
             return Resultado.erro("O nome do produto não pode ser vazio!");
         }
 
@@ -61,6 +60,8 @@ public class ProdutoService {
         }
 
         Produto novoProduto = produtoMapper.toEntity(produtoDTO);
+        novoProduto.setCategoria(categoria);
+
         produtoRepository.save(novoProduto);
         return Resultado.sucesso("Produto cadastrado com sucesso com o ID: " + novoProduto.getId() + "!");
     }
@@ -103,18 +104,18 @@ public class ProdutoService {
             return Resultado.erro("A quantidade deve ser maior que zero.");
         }
 
-        Optional<Produto> produtoOptional = produtoRepository.findById(id);
-        if (!produtoOptional.isPresent()) {
-            return Resultado.erro("Produto não encontrado!");
+        Produto optionalProduto = produtoRepository.getById(id);
+        if (optionalProduto == null) {
+            return Resultado.erro("Produto nao encontrado!");
         }
 
-        Produto produto = produtoOptional.get();
-        produto.setNome(produtoDTO.getNome());
-        produto.setDescricao(produtoDTO.getDescricao());
-        produto.setQuantidade(produtoDTO.getQuantidade());
-        produto.setPrecoUnitario(produtoDTO.getPrecoUnitario());
-        produtoRepository.save(produto);
-        return Resultado.sucesso(produtoMapper.toDTO(produto));
+        optionalProduto.setNome(produtoDTO.getNome());
+        optionalProduto.setDescricao(produtoDTO.getDescricao());
+        optionalProduto.setQuantidade(produtoDTO.getQuantidade());
+        optionalProduto.setPrecoUnitario(produtoDTO.getPrecoUnitario());
+        produtoRepository.save(optionalProduto);
+        return Resultado.sucesso(produtoMapper.toDTO(optionalProduto));
+
     }
 
     @Transactional

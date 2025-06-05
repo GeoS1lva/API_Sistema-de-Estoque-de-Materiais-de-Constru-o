@@ -26,7 +26,7 @@ public class ClienteDTO {
     private String cpf;
 
     @NotBlank(message = "Insira o Telefone")
-    @Column(length = 11)
+    @Size(min = 11, max = 11, message = "O número deve conter DDD e o 9")
     @Schema(example = "Telefone de contato")
     private String telefone;
 }

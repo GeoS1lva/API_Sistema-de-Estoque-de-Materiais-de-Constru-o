@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,15 +99,14 @@ public class CategoriaService {
             return Resultado.erro("A descrição da categoria não pode ter mais de 125 caracteres!");
         }
 
-        Optional<Categoria> categoriaOptional = categoriaRepository.findById(id);
-        if (categoriaOptional.isPresent()) {
-            Categoria categoria = categoriaOptional.get();
-            categoria.setNome(categoriaDTO.getNome());
-            categoria.setDescricao(categoriaDTO.getDescricao());
-            categoriaRepository.save(categoria);
-            return Resultado.sucesso(categoriaMapper.tDto(categoria));
+        Categoria categoria = categoriaRepository.getById(id);
+        if (categoria == null) {
+            return Resultado.erro("Categoria não encontrada");
         }
-        return Resultado.erro("Categoria não encontrada!");
+        categoria.setNome(categoriaDTO.getNome());
+        categoria.setDescricao(categoriaDTO.getDescricao());
+        categoriaRepository.save(categoria);
+        return Resultado.sucesso(categoriaMapper.tDto(categoria));
     }
 
     @Transactional

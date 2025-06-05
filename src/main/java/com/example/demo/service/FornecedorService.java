@@ -6,12 +6,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.FornecedorDTO;
 import com.example.demo.domain.Fornecedor;
+
 import com.example.demo.mapper.FornecedorMapper;
 import com.example.demo.repository.IFornecedorRepository;
 
@@ -158,17 +158,17 @@ public class FornecedorService {
             return Resultado.erro("Já existe um fornecedor com este CNPJ!");
         }
 
-        Optional<Fornecedor> fornecedorOptional = fornecedorRepository.findById(id);
-        if (fornecedorOptional.isPresent()) {
-            Fornecedor fornecedor = fornecedorOptional.get();
-            fornecedor.setNome(fornecedorDTO.getNome());
-            fornecedor.setCnpj(fornecedorDTO.getCnpj());
-            fornecedor.setTelefone(fornecedorDTO.getTelefone());
-            fornecedor.setEmail(fornecedorDTO.getEmail());
-            fornecedorRepository.save(fornecedor);
-            return Resultado.sucesso(fornecedorMapper.toDto(fornecedor));
+        Fornecedor fornecedor = fornecedorRepository.getById(id);
+        if (fornecedor == null) {
+            return Resultado.erro("Produto nao encontrado!");
         }
-        return Resultado.erro("Fornecedor nao encontrado!");
+
+        fornecedor.setNome(fornecedorDTO.getNome());
+        fornecedor.setCnpj(fornecedorDTO.getCnpj());
+        fornecedor.setTelefone(fornecedorDTO.getTelefone());
+        fornecedor.setEmail(fornecedorDTO.getEmail());
+        fornecedorRepository.save(fornecedor);
+        return Resultado.sucesso(fornecedorMapper.toDto(fornecedor));
     }
 
     @Transactional

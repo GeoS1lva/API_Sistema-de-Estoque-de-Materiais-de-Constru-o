@@ -12,6 +12,7 @@ import com.example.demo.DTO.VendaDTO;
 import com.example.demo.domain.Cliente;
 import com.example.demo.domain.Produto;
 import com.example.demo.domain.Venda;
+import com.example.demo.mapper.VendaMapper;
 import com.example.demo.repository.IClienteRepository;
 import com.example.demo.repository.IProdutoRepository;
 import com.example.demo.repository.IVendaRepository;
@@ -28,9 +29,12 @@ public class VendaService {
     @Autowired
     private IVendaRepository vendaRepository;
 
+    @Autowired
+    private VendaMapper vendaMapper;
+
     public Resultado realizarVenda(VendaDTO vendaDTO){
         if(!clienteRepository.existsById(vendaDTO.getClienteId())){
-            return Resultado.erro("Cliente não encontrado");
+            return Resultado.erro("Cliente não encontrado!");
         }
 
         Cliente cliente = clienteRepository.getById(vendaDTO.getClienteId());
@@ -41,17 +45,18 @@ public class VendaService {
 
         Produto produto = produtoRepository.getById(vendaDTO.getProdutoId());
 
-        if(produto.getQuantidade() <= vendaDTO.getQuantidade() || produto.getQuantidade() == 1){
-            return Resultado.erro("O Produto não contém a quantidade suficiente para completar a compra!");
+        if(produto.getQuantidade() <= vendaDTO.getQuantidade()){
+            return Resultado.erro("Não temos a quantidade desejada do produto.");
         }
 
         atualizarQuantidade(produto, vendaDTO.getQuantidade());
 
-        Venda novaVenda = new Venda(cliente, produto, vendaDTO.getQuantidade(), vendaDTO.getDataVenda());
+        Venda venda = new Venda(cliente, produto, vendaDTO.getQuantidade()); 
 
-        vendaRepository.save(novaVenda);
+        vendaRepository.save(venda);
+        produtoRepository.save(produto);
 
-        return Resultado.sucesso(novaVenda);
+        return Resultado.sucesso(vendaMapper.toDTO(venda));
     }
 
     public Resultado listasVendas(){
@@ -61,17 +66,17 @@ public class VendaService {
             return Resultado.erro("Não a Vendas registradas");
         }
 
-        return Resultado.sucesso(vendas);
+        return Resultado.sucesso(vendaMapper.toDTOList(vendas));
     }
 
     public Resultado detalharVenda(Long vendaId){
-        Venda venda = vendaRepository.getById(vendaId);
-
-        if(venda == null){
-            return Resultado.erro("Essa Venda não foi encontrada!");
+        if(!vendaRepository.existsById(vendaId)){
+            return Resultado.erro("Venda não encontrado!");
         }
 
-        return Resultado.sucesso(venda);
+        Venda venda = vendaRepository.getById(vendaId);
+
+        return Resultado.sucesso(vendaMapper.toDTO(venda));
     }
 
     public Resultado deletarVenda(Long vendaId){
@@ -87,6 +92,5 @@ public class VendaService {
         int valorAtualizado = produto.getQuantidade() - quantidade;
 
         produto.setQuantidade(valorAtualizado);
-        produtoRepository.save(produto);
     }
 }
