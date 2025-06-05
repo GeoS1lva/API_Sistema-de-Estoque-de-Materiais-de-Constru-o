@@ -5,6 +5,7 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,8 @@ import com.example.demo.service.Resultado;
 import com.example.demo.service.VendaService;
 
 import org.springframework.web.bind.annotation.RequestBody;
+
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -31,6 +34,7 @@ public class VendaController {
     private VendaService vendaService;
 
     @PostMapping
+    @Operation(description = "Registrar uma nova Venda")
     public ResponseEntity<?> registrarVenda(@RequestBody @Valid VendaDTO vendaDTO){
         Resultado resultado = vendaService.realizarVenda(vendaDTO);
 
@@ -42,6 +46,7 @@ public class VendaController {
     }   
 
     @GetMapping
+    @Operation(description = "Lista todas as vendas realizadas")
     public ResponseEntity<?> listarVendas(){
         Resultado resultado = vendaService.listasVendas();
 
@@ -53,6 +58,7 @@ public class VendaController {
     }
 
     @GetMapping("/{id}")
+    @Operation(description = "Obtém detalhes de uma venda por ID")
     public ResponseEntity<?> detalharVenda(@PathVariable Long id){
         Resultado resultado = vendaService.detalharVenda(id);
 
@@ -64,6 +70,7 @@ public class VendaController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(description = "Remove uma venda do sistema")
     public ResponseEntity<?> removerVenda(@PathVariable Long id){
         Resultado resultado = vendaService.deletarVenda(id);
 

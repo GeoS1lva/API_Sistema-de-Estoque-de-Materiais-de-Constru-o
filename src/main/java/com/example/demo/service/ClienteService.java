@@ -57,6 +57,19 @@ public class ClienteService {
         return Resultado.sucesso(clienteMapper.toDTOList(clientes));
     }
 
+    public Resultado detalharCliente(String cpf){
+        if(!validarCpf(cpf)){
+            return Resultado.erro("CPF inválido!");
+        }
+        
+        if(!clienteRepository.existsByCpf(cpf)){
+            return Resultado.erro("Cliente não encontrado!");
+        }
+
+        Cliente cliente = clienteRepository.getByCpf(cpf);
+        return Resultado.sucesso(clienteMapper.toDTO(cliente));
+    }
+
     public Resultado deletarPorCpf(String cpf) {
         if (!clienteRepository.existsByCpf(cpf)) {
             return Resultado.erro("Cliente não encontrado!");
