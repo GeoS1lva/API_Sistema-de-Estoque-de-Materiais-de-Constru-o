@@ -28,12 +28,20 @@ public class ClienteService {
     private ClienteMapper clienteMapper;
 
     public Resultado cadastrarCliente(ClienteDTO cliente) {
+        if(cliente.getNome().isEmpty()){
+            return Resultado.erro("Nome não pode ser nulo!");
+        }
+
         if (!cliente.getNome().contains(" ")) {
             return Resultado.erro("Nome deve conter nome e sobrenome");
         }
 
         if (!validarCpf(cliente.getCpf())) {
             return Resultado.erro("CPF inválido!");
+        }
+
+        if(cliente.getTelefone().length() != 11){
+            return Resultado.erro("O Numero de telefone precisa ter 11 digitos com DDD");
         }
 
         if (clienteRepository.existsByCpf(cliente.getCpf())) {
@@ -86,7 +94,6 @@ public class ClienteService {
     }
 
     public static boolean validarCpf(String CPF) {
-
         String cpf = CPF.replaceAll("\\D", "");
 
         if (cpf.length() != 11) {

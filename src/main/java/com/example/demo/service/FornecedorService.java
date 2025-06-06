@@ -53,14 +53,19 @@ public class FornecedorService {
 
         soma = 0;
         int[] pesos2 = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 13; i++) {
             soma += (cnpj.charAt(i) - '0') * pesos2[i];
         }
 
         resto = soma % 11;
         int digito2 = (resto < 2) ? 0 : 11 - resto;
-        return digito2 == (cnpj.charAt(digito2) - '0');
+
+        return digito2 == (cnpj.charAt(13) - '0');
     }
+        
+
+
+    
 
     private boolean ValidarEmailFornecedor(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -88,7 +93,7 @@ public class FornecedorService {
             return Resultado.erro("O email do fornecedor nao pode ser vazio!");
         }
 
-        if (ValidarCnpj(fornecedorDTO.getCnpj())) {
+        if (!ValidarCnpj(fornecedorDTO.getCnpj())) {
             return Resultado.erro("O CNPJ do fornecedor não eh valido!");
         }
 
