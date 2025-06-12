@@ -15,6 +15,8 @@ import lombok.Setter;
 @Getter @Setter
 public class CompraResponseDTO {
 
+    private Long id;
+
     private Long produtoId;
 
     private Long fornecedorId;
