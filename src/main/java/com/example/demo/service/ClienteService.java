@@ -40,6 +40,10 @@ public class ClienteService {
             return Resultado.erro("CPF inválido!");
         }
 
+        if(!cliente.getTelefone().matches("[0-9]+")){
+            return Resultado.erro("Telefone deve conter somente numeros");
+        }
+
         if(cliente.getTelefone().length() != 11){
             return Resultado.erro("O Numero de telefone precisa ter 11 digitos com DDD");
         }
